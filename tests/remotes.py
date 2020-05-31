@@ -22,6 +22,7 @@ TEST_CONFIG = {
 
 TEST_AWS_REPO_BUCKET = os.environ.get("DVC_TEST_AWS_REPO_BUCKET", "dvc-temp")
 TEST_GCP_REPO_BUCKET = os.environ.get("DVC_TEST_GCP_REPO_BUCKET", "dvc-test")
+TEST_GDRIVE_REPO_BUCKET = "root"
 TEST_OSS_REPO_BUCKET = "dvc-test"
 
 TEST_GCP_CREDS_FILE = os.path.abspath(
@@ -141,10 +142,13 @@ class GDrive:
     def should_test():
         return os.getenv(GDriveRemote.GDRIVE_CREDENTIALS_DATA) is not None
 
-    def get_url(self):
-        if not getattr(self, "_remote_url", None):
-            self._remote_url = "gdrive://root/" + str(uuid.uuid4())
-        return self._remote_url
+    @staticmethod
+    def get_storagepath():
+        return TEST_GDRIVE_REPO_BUCKET + "/" + str(uuid.uuid4())
+
+    @staticmethod
+    def get_url():
+        return "gdrive://" + GDrive.get_storagepath()
 
 
 class Azure:
