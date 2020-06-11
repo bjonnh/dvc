@@ -298,7 +298,7 @@ class Git(Base):
         with open(hook, "w+") as fobj:
             fobj.write(f"#!/bin/sh\nexec dvc git-hook {name} $@\n")
 
-        os.chmod(hook, 0o777)
+        os.chmod(hook, 0o755)
 
     def install(self, use_pre_commit_tool=False):
         if not use_pre_commit_tool:
